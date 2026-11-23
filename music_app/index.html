@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Music-Duniya — Haute Hi-Fi Studio & Lossless Audio</title>
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app" class="app-container">
+
+    <!-- MANDATORY USER LOGIN & GMAIL AUTH CARD -->
+    <div class="auth-modal-overlay" id="auth-modal-overlay">
+      <div class="auth-card" id="auth-card">
+        <button class="auth-close-btn" id="btn-close-auth" style="display:none;">✕</button>
+        <div class="auth-header">
+          <div class="auth-emblem">
+            <img src="logo.png" class="auth-logo" alt="Music-Duniya">
+            <span class="auth-emblem-ring"></span>
+          </div>
+          <h2>Music-Duniya Studio</h2>
+          <p class="auth-subtitle">Sign in with your Gmail to unlock unrestricted 24-bit Lossless Streaming &amp; Long-Distance Jam sessions</p>
+        </div>
+        <form class="auth-form" id="auth-form" onsubmit="return false;">
+          <div class="auth-field">
+            <label for="auth-name">Your Full Name</label>
+            <div class="input-glow-box">
+              <input type="text" id="auth-name" placeholder="e.g. Arsh Rana" autocomplete="name" required>
+            </div>
+          </div>
+          <div class="auth-field">
+            <label for="auth-email">Your Gmail Address</label>
+            <div class="input-glow-box">
+              <input type="email" id="auth-email" placeholder="e.g. arshrana@gmail.com" autocomplete="email" required>
+            </div>
+          </div>
+          <div class="auth-actions">
+            <button class="btn-primary auth-submit-btn" id="btn-auth-submit">
+              <svg viewBox="0 0 24 24" class="auth-btn-icon"><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z"/></svg>
+              <span>Authenticate &amp; Enter Studio</span>
+            </button>
+          </div>
+          <div class="auth-footer-badge">
+            <span class="auth-badge-dot"></span>
+            <span>Verified Gmail required for secure stream access &amp; sync</span>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- STUDIO COMMAND HEADER (DESKTOP & TABLET) -->
+    <header class="studio-header" id="top-bar">
+      <!-- Left: Brand Emblem & Live Telemetry -->
+      <div class="studio-brand-cluster">
+        <div class="studio-logo-wrap" data-action="view" data-view="home">
+          <img src="logo.png" class="brand-logo-img" alt="Music-Duniya">
+          <div class="brand-text-block">
+            <div class="brand-title">Music-Duniya</div>
+            <div class="brand-spec">
+              <span class="brand-live-pulse"></span>
+              <span class="brand-quality-label">24-BIT • 96kHz HI-RES</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Frequency Spectrum Wave Bars -->
+        <div class="header-spectrum-viz" id="header-spectrum" title="Studio Signal Active">
+          <span class="spec-bar b1"></span>
+          <span class="spec-bar b2"></span>
+          <span class="spec-bar b3"></span>
+          <span class="spec-bar b4"></span>
+          <span class="spec-bar b5"></span>
+        </div>
+      </div>
+
+      <!-- Center: Studio Deck Navigation Switcher -->
+      <nav class="studio-deck-nav">
+        <button class="deck-tab active nav-item" data-view="home" title="Master Turntable & Soundstage">
+          <svg viewBox="0 0 24 24" class="tab-icon"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 14.5c-2.49 0-4.5-2.01-4.5-4.5S9.51 7.5 12 7.5s4.5 2.01 4.5 4.5-2.01 4.5-4.5 4.5zm0-5.5c-.55 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"/></svg>
+          <span>Console</span>
+        </button>
+
+        <button class="deck-tab nav-item" data-view="library" title="Curated Master Crates & Playlists">
+          <svg viewBox="0 0 24 24" class="tab-icon"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12z"/></svg>
+          <span>Crates</span>
+        </button>
+
+        <button class="deck-tab nav-item" data-view="artists" title="Verified Punjabi & Global Maestros">
+          <svg viewBox="0 0 24 24" class="tab-icon"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+          <span>Maestros</span>
+        </button>
+
+        <button class="deck-tab nav-item" data-view="jam" title="Real-Time Listen Together Room">
+          <svg viewBox="0 0 24 24" class="tab-icon"><path d="M12 3v9.28c-.47-.17-.97-.28-1.5-.28C8.01 12 6 14.01 6 16.5S8.01 21 10.5 21c2.31 0 4.2-1.75 4.45-4H15V6h4V3h-7z"/></svg>
+          <span>Jam Lounge</span>
+        </button>
+
+        <button class="deck-tab nav-item" data-view="liked" title="Your Liked Vault">
+          <svg viewBox="0 0 24 24" class="tab-icon"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+          <span>Vault</span>
+        </button>
+      </nav>
+
+      <!-- Right: Search Bar & Utility Deck -->
+      <div class="studio-utility-cluster">
+        <!-- Floating Command Search -->
+        <div class="studio-search-wrap" id="top-search-container">
+          <svg viewBox="0 0 24 24" class="search-lens-icon"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+          <input type="text" id="search-input" placeholder="Search master catalog..." autocomplete="off" spellcheck="false">
+          <kbd class="search-key-badge" title="Press Enter to search">↵</kbd>
+          <button class="clear-search-btn" id="btn-clear-search" style="display:none;" title="Clear search">✕</button>
+        </div>
+
+        <!-- Navigation History Arrows (Hidden but functional for ID hooks) -->
+        <div style="display:none;">
+          <button id="btn-nav-back"></button>
+          <button id="btn-nav-forward"></button>
+          <button id="btn-create-playlist"></button>
+          <div id="user-playlists-container"></div>
+          <span id="liked-count">0</span>
+          <span id="cached-count">0</span>
+        </div>
+
+        <!-- Jam Beacon Trigger -->
+        <button class="jam-beacon-btn" id="btn-top-jam" title="Start or Join a Synced Jam Session">
+          <span class="beacon-pulse"></span>
+          <svg viewBox="0 0 24 24" class="beacon-icon"><path d="M12 3v9.28c-.47-.17-.97-.28-1.5-.28C8.01 12 6 14.01 6 16.5S8.01 21 10.5 21c2.31 0 4.2-1.75 4.45-4H15V6h4V3h-7z"/></svg>
+          <span class="beacon-label">Jam Lounge</span>
+        </button>
+
+        <!-- APK Download Button -->
+        <button class="apk-chip-btn" id="btn-install-app" title="Download Android APK">
+          <svg viewBox="0 0 24 24" class="chip-icon"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+          <span>APK</span>
+        </button>
+
+        <!-- User Profile Avatar Pill -->
+        <div class="user-profile-capsule" id="btn-desktop-profile" title="Studio Account &amp; Settings">
+          <div class="user-avatar-disc" id="btn-open-profile-drawer">
+            <span id="p-avatar-letter">A</span>
+          </div>
+          <div class="user-meta-col">
+            <span class="user-meta-name" id="p-user-name">Arsh Rana</span>
+            <span class="user-meta-status">Hi-Fi Studio Active</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- MOBILE STUDIO TOP BAR -->
+    <header class="mobile-studio-header" id="mobile-top-header">
+      <div class="m-header-upper">
+        <div class="m-user-avatar-wrap" id="btn-m-profile-drawer">
+          <span class="m-avatar-glyph">A</span>
+          <span class="m-online-bead"></span>
+        </div>
+
+        <div class="m-header-brand" data-action="view" data-view="home">
+          <img src="logo.png" class="brand-logo-img" alt="Logo">
+          <div class="m-brand-meta">
+            <span class="m-header-title" id="m-header-title">Music-Duniya</span>
+            <span class="m-header-subtag">24-BIT • LOSSLESS HI-FI</span>
+          </div>
+        </div>
+
+        <div class="m-header-controls">
+          <button class="m-round-btn" id="btn-m-search-top" title="Search">
+            <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+          </button>
+          <button class="m-round-btn" id="btn-m-create-top" title="Jam Room">
+            <svg viewBox="0 0 24 24"><path d="M12 3v9.28c-.47-.17-.97-.28-1.5-.28C8.01 12 6 14.01 6 16.5S8.01 21 10.5 21c2.31 0 4.2-1.75 4.45-4H15V6h4V3h-7z"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Horizontal Deck Switcher -->
+      <div class="m-deck-pills" id="m-filter-pills">
+        <button class="m-deck-chip active" data-pill="all">✦ Console</button>
+        <button class="m-deck-chip" data-pill="music">◈ Crates</button>
+        <button class="m-deck-chip" data-pill="podcasts">◉ Maestros</button>
+        <button class="m-deck-chip" data-pill="audiobooks">☊ Jam Room</button>
+      </div>
+    </header>
+
+    <!-- MAIN SOUNDSTAGE CONTENT VIEWPORT -->
+    <main class="studio-viewport" id="content-view">
+      <div id="view-container" class="view-container"></div>
+    </main>
+
+    <!-- RIGHT STUDIO INSPECTOR / QUEUE DRAWER -->
+    <aside class="right-drawer" id="right-drawer">
+      <div class="drawer-header">
+        <div class="drawer-title-box">
+          <span class="drawer-spec-tag">STUDIO QUEUE</span>
+          <h3 id="drawer-title">Upcoming Tracks</h3>
+        </div>
+        <button class="icon-btn" id="btn-close-drawer" title="Close Drawer">
+          <svg viewBox="0 0 24 24" class="icon"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </div>
+      <div class="drawer-content" id="drawer-content"></div>
+    </aside>
+
+    <!-- FLOATING MASTER AUDIO CONSOLE (BOTTOM PLAYER DOCK) -->
+    <footer class="master-console" id="player-bar">
+      <!-- Left: Track Display & Micro Vinyl -->
+      <div class="console-left">
+        <div class="console-vinyl-sleeve" id="player-art-trigger" title="Expand Fullscreen Studio Deck">
+          <div class="mini-vinyl-disc" id="console-mini-vinyl">
+            <span class="mini-spindle-hole"></span>
+          </div>
+          <img src="logo.png" alt="Current Track" id="player-cover-art" class="console-album-jacket">
+        </div>
+
+        <div class="console-metadata">
+          <div class="console-track-title-row">
+            <span class="console-title" id="player-title">Select a Master Tape</span>
+            <span class="lossless-pill" id="console-lossless-pill">320K FLAC</span>
+          </div>
+          <div class="console-artist" id="player-artist">Music-Duniya Soundstage</div>
+        </div>
+
+        <button class="like-btn" id="player-like-btn" title="Add to Vault">
+          <svg viewBox="0 0 24 24" class="icon heart-outline"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg>
+          <svg viewBox="0 0 24 24" class="icon heart-filled" style="display:none;"><path fill="#f59e0b" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+        </button>
+      </div>
+
+      <!-- Center: Tactile Audio Controls & Waveform Scrubber -->
+      <div class="console-center">
+        <div class="console-transport-deck">
+          <!-- Left VU Indicator -->
+          <div class="vu-meter left-vu">
+            <span class="vu-bar v1"></span>
+            <span class="vu-bar v2"></span>
+            <span class="vu-bar v3"></span>
+          </div>
+
+          <!-- Shuffle Toggle -->
+          <button class="transport-btn" id="btn-shuffle" title="Shuffle Crates (S)">
+            <svg viewBox="0 0 24 24" class="icon"><path d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"/></svg>
+            <span class="active-dot"></span>
+          </button>
+
+          <!-- Prev Track -->
+          <button class="transport-btn" id="btn-prev" title="Previous Master (P)">
+            <svg viewBox="0 0 24 24" class="icon"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+          </button>
+
+          <!-- Knurled Play/Pause Master Switch -->
+          <button class="master-play-switch" id="btn-play-pause" title="Play / Pause Master (Space)">
+            <span class="switch-glow"></span>
+            <svg viewBox="0 0 24 24" class="play-icon"><path d="M8 5v14l11-7z"/></svg>
+            <svg viewBox="0 0 24 24" class="pause-icon" style="display:none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+          </button>
+
+          <!-- Next Track -->
+          <button class="transport-btn" id="btn-next" title="Next Master (N)">
+            <svg viewBox="0 0 24 24" class="icon"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+          </button>
+
+          <!-- Repeat Toggle -->
+          <button class="transport-btn" id="btn-repeat" title="Repeat Mode (R)">
+            <svg viewBox="0 0 24 24" class="icon"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/></svg>
+            <span class="active-dot"></span>
+          </button>
+
+          <!-- Right VU Indicator -->
+          <div class="vu-meter right-vu">
+            <span class="vu-bar v3"></span>
+            <span class="vu-bar v2"></span>
+            <span class="vu-bar v1"></span>
+          </div>
+
+          <!-- Hidden hook button for mobile connect compatibility -->
+          <button style="display:none;" id="btn-m-connect"></button>
+        </div>
+
+        <!-- Precision Waveform Scrubber Deck -->
+        <div class="console-timeline-row">
+          <span class="time-readout mono" id="current-time">0:00</span>
+          <div class="seek-bar-wrap" id="seek-bar-wrap">
+            <div class="seek-track-bg"></div>
+            <div class="seek-bar-fill" id="seek-bar-fill"></div>
+            <div class="seek-bar-handle" id="seek-bar-handle"></div>
+          </div>
+          <span class="time-readout mono" id="total-duration">0:00</span>
+        </div>
+      </div>
+
+      <!-- Right: Studio Telemetry & Output Controls -->
+      <div class="console-right">
+        <!-- Jam Room Live Button -->
+        <button class="console-icon-btn" id="btn-jam-player" title="Long-Distance Jam Audio Sync">
+          <svg viewBox="0 0 24 24" class="icon"><path d="M12 3v9.28c-.47-.17-.97-.28-1.5-.28C8.01 12 6 14.01 6 16.5S8.01 21 10.5 21c2.31 0 4.2-1.75 4.45-4H15V6h4V3h-7z"/></svg>
+        </button>
+
+        <!-- Queue Inspector Toggle -->
+        <button class="console-icon-btn" id="btn-queue-toggle" title="View Studio Queue">
+          <svg viewBox="0 0 24 24" class="icon"><path d="M15 6H3v2h12V6zm0 4H3v2h12v-2zM3 16h8v-2H3v2zM17 6v8.18c-.31-.11-.65-.18-1-.18-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3V8h3V6h-5z"/></svg>
+        </button>
+
+        <!-- Volume Knob & Fader -->
+        <div class="volume-cluster">
+          <button class="console-icon-btn" id="btn-mute" title="Mute / Unmute">
+            <svg viewBox="0 0 24 24" class="icon vol-high"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+            <svg viewBox="0 0 24 24" class="icon vol-muted" style="display:none;"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>
+          </button>
+          <div class="volume-bar-wrap" id="volume-bar-wrap">
+            <div class="volume-bar-fill" id="volume-bar-fill"></div>
+            <div class="volume-bar-handle" id="volume-bar-handle"></div>
+          </div>
+        </div>
+
+        <!-- Fullscreen Deck Toggle -->
+        <button class="console-icon-btn" id="btn-fullscreen" title="Expand Studio Turntable Stage">
+          <svg viewBox="0 0 24 24" class="icon"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+        </button>
+      </div>
+
+      <!-- Mobile Mini Progress Underlay -->
+      <div class="m-mini-progress-underlay">
+        <div class="m-mini-fill" id="m-mini-progress-fill"></div>
+      </div>
+    </footer>
+
+    <!-- PROFILE & SETTINGS RIGHT DRAWER -->
+    <div class="profile-drawer-overlay" id="profile-drawer-overlay">
+      <div class="profile-drawer-card">
+        <div class="p-card-header">
+          <div class="p-header-title-row">
+            <span class="p-studio-tag">STUDIO PROFILE</span>
+            <button class="p-close-btn" id="btn-close-drawer">✕</button>
+          </div>
+
+          <div class="p-avatar-circle" id="p-avatar-box">
+            <span id="p-avatar-letter">A</span>
+            <div class="p-status-ring"></div>
+          </div>
+
+          <h3 class="p-user-name" id="p-user-name">Arsh Rana</h3>
+          <p class="p-user-email" id="p-user-email">arshrana@gmail.com</p>
+
+          <div class="p-plan-badge">
+            <span class="p-gold-dot"></span>
+            <span>Music-Duniya Master Studio Member</span>
+          </div>
+        </div>
+
+        <div class="p-card-menu">
+          <button class="p-menu-row" id="p-menu-settings">
+            <div class="p-menu-left">
+              <svg viewBox="0 0 24 24" class="p-icon"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+              <span>Audio Fidelity &amp; System Settings</span>
+            </div>
+            <span class="p-chevron">›</span>
+          </button>
+
+          <button class="p-menu-row" id="p-menu-updates">
+            <div class="p-menu-left">
+              <svg viewBox="0 0 24 24" class="p-icon"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+              <span>Software Releases &amp; OTA Updates</span>
+            </div>
+            <span class="p-badge-version">v2.0 Hi-Fi</span>
+          </button>
+
+          <button class="p-menu-row sign-out-row" id="p-menu-signout">
+            <div class="p-menu-left">
+              <svg viewBox="0 0 24 24" class="p-icon"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>
+              <span>Sign Out of Account</span>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- AUDIO FIDELITY & SETTINGS MODAL -->
+    <div class="settings-modal-overlay" id="settings-modal-overlay">
+      <div class="settings-modal" id="settings-modal">
+        <div class="settings-header">
+          <div class="settings-title-cluster">
+            <span class="settings-studio-tag">SYSTEM TELEMETRY</span>
+            <h3>Studio Settings</h3>
+          </div>
+          <button class="settings-close-btn" id="btn-close-settings">✕</button>
+        </div>
+
+        <div class="settings-body">
+          <!-- Audio Fidelity -->
+          <div class="settings-section">
+            <div class="settings-section-title">Master Audio Engine</div>
+            <div class="settings-row">
+              <div>
+                <div class="s-label">Stream Fidelity</div>
+                <div class="s-desc">Ultra Lossless 320kbps MP3 / AAC / FLAC stream resolution</div>
+              </div>
+              <span class="badge-active">Lossless ✦</span>
+            </div>
+          </div>
+
+          <!-- Jam Sync -->
+          <div class="settings-section">
+            <div class="settings-section-title">Long-Distance Jam Audio</div>
+            <div class="settings-row">
+              <div>
+                <div class="s-label">Zero-Latency Sync Channel</div>
+                <div class="s-desc">Synchronized playback relay via BroadcastChannel &amp; Cloud</div>
+              </div>
+              <button class="btn-secondary" id="btn-settings-jam">Open Jam</button>
+            </div>
+          </div>
+
+          <!-- Version & Update -->
+          <div class="settings-section">
+            <div class="settings-section-title">Application Updates</div>
+            <div class="settings-row">
+              <div>
+                <div class="s-label">Installed Version</div>
+                <div class="s-desc" id="s-app-version">v2.0.0 (Haute Hi-Fi Edition)</div>
+              </div>
+              <button class="btn-check-update" id="btn-check-update">Check For Updates</button>
+            </div>
+            <div id="update-status-box" class="update-status-box" style="display:none;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LONG-DISTANCE JAM MODAL -->
+    <div class="jam-modal-overlay" id="jam-modal-overlay">
+      <div class="jam-modal" id="jam-modal">
+        <div class="jam-header">
+          <div class="jam-title-box">
+            <span class="jam-live-dot"></span>
+            <h3>Long-Distance Jam Lounge</h3>
+          </div>
+          <button class="jam-close-btn" id="btn-close-jam">✕</button>
+        </div>
+
+        <div class="jam-body">
+          <p class="jam-desc">Listen synchronously with your friends anywhere on earth. The host rotates master tapes and scrubs the track; all connected listeners hear the exact same sound in real-time.</p>
+
+          <div class="jam-tab-bar">
+            <button class="jam-tab active" id="tab-jam-create">Host New Jam</button>
+            <button class="jam-tab" id="tab-jam-join">Join A Room</button>
+          </div>
+
+          <!-- Host View -->
+          <div id="jam-host-panel" class="jam-panel">
+            <div class="jam-code-box">
+              <div class="jam-code-label">ACTIVE ROOM CODE</div>
+              <div class="jam-code-val mono" id="jam-room-code">DUNIYA-8421</div>
+              <button class="btn-copy-code" id="btn-copy-jam-code">Copy Invite Link</button>
+            </div>
+            <p class="jam-hint">Share this code with a listener. Their player locks into your master stream instantly.</p>
+          </div>
+
+          <!-- Join View -->
+          <div id="jam-join-panel" class="jam-panel" style="display:none;">
+            <input type="text" class="jam-join-input mono" id="input-jam-join" placeholder="e.g. DUNIYA-8421">
+            <button class="btn-join-jam" id="btn-submit-jam-join">Connect &amp; Lock Into Stream</button>
+          </div>
+
+          <!-- Active Room Banner -->
+          <div id="jam-active-banner" class="jam-active-banner" style="display:none;">
+            <span class="live-dot"></span>
+            <span id="jam-active-text">Connected to Jam with Arsh Rana</span>
+            <button class="btn-leave-jam" id="btn-leave-jam">Disconnect</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast" class="toast">Music-Duniya Telemetry</div>
+
+    <!-- GRAND FULLSCREEN TURNTABLE STAGE MODAL -->
+    <div id="fullscreen-overlay" class="fullscreen-overlay">
+      <button class="close-fs-btn" id="btn-close-fs" title="Exit Stage">
+        <svg viewBox="0 0 24 24" class="icon"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+      </button>
+
+      <div class="fs-stage-container">
+        <!-- Turntable Deck in Fullscreen -->
+        <div class="fs-turntable-deck">
+          <div class="fs-vinyl-record" id="fs-vinyl">
+            <div class="fs-groove-rings"></div>
+            <img src="" id="fs-cover" class="fs-label-art" alt="Art">
+            <div class="fs-center-spindle"></div>
+          </div>
+        </div>
+
+        <div class="fs-meta-deck">
+          <span class="fs-badge">24-BIT • 96kHz LOSSLESS MASTER</span>
+          <h1 class="fs-title" id="fs-title">Select a Track</h1>
+          <h2 class="fs-artist" id="fs-artist">Music-Duniya Master Studio</h2>
+        </div>
+      </div>
+    </div>
+
+    <!-- NATIVE AUDIO ENGINE -->
+    <audio id="audio-engine" preload="auto"></audio>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

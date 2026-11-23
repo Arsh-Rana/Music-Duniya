@@ -1,0 +1,30 @@
+# Environment and Local Secrets
+.env
+.env.*
+*.env
+
+# Python & Caches
+__pycache__/
+*.py[cod]
+cache.db
+temp_cache/
+downloads/
+*.idsig
+
+# Browser preview profiles and temporary directories
+edge_preview_*
+edge_temp_*
+
+# Android build artifacts and keys
+android_app/compiled_res.zip
+android_app/unaligned.apk
+android_app/*-aligned.apk
+android_app/obj/
+android_app/dex_out/
+android_app/debug.keystore
+
+# Editor & System Files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

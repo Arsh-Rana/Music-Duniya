@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: music-duniya
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python music_app/server.py
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: PYTHON_VERSION
+        value: 3.11.9
