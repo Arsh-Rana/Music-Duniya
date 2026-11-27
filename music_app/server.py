@@ -170,27 +170,23 @@ class MusicDuniyaHandler(BaseHTTPRequestHandler):
             self.send_json_response({"active": True, "room": room})
             return
 
-        # 8. API: Check for Updates in Settings
+        # 8. API: Check for Updates in Settings & Background OTA Broadcast
         if pathname == "/api/check-update":
             apk_path = os.path.join(ROOT_DIR, "Music-Duniya.apk")
-            apk_size_mb = f"{os.path.getsize(apk_path) / (1024 * 1024):.2f} MB" if os.path.exists(apk_path) else "0.06 MB"
+            apk_size_mb = f"{os.path.getsize(apk_path) / (1024 * 1024):.2f} MB" if os.path.exists(apk_path) else "0.15 MB"
             update_info = {
                 "app_name": "Music-Duniya",
-                "current_version": "v1.2.0",
-                "latest_version": "v1.2.0",
-                "is_latest": True,
-                "release_date": "2026-11-23",
+                "current_version": "v2.0.0",
+                "latest_version": "v2.0.0",
+                "update_available": True,
+                "is_latest": False,
+                "release_date": "2026-11-27",
                 "apk_filename": "Music-Duniya.apk",
                 "apk_download_url": "/Music-Duniya.apk",
+                "apk_url": "/Music-Duniya.apk",
                 "apk_size": apk_size_mb,
-                "changelog": [
-                    "Official Music-Duniya branding & logo",
-                    "Dynamic Island Mini Player with live music waveform equalizer",
-                    "Long-Distance Listen Together (Jam sessions with synced audio)",
-                    "Search for Updates feature in Settings",
-                    "Ultra-Fast streaming (<100ms direct CDN playback)",
-                    "DJPunjab A-Z catalog with Supabase Cloud Storage caching"
-                ]
+                "title": "Haute Hi-Fi Studio & Background Playback Release",
+                "changelog": "• Haute Hi-Fi Studio Master Soundstage with 3D Turntable Deck & Tonearm<br>• Native Android Foreground Media Notification with lockscreen controls<br>• Full Android OS Force Stop capability enabled during background playback<br>• Heavyweight Master Crates & Royal Punjabi Maestros catalog<br>• Mandatory Gmail authentication gate & long-distance Jam sync"
             }
             self.send_json_response(update_info)
             return

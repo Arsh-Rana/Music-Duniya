@@ -2451,32 +2451,49 @@
           } catch (_) {}
 
           if (data && data.update_available) {
+            const dlUrl = data.apk_download_url || data.apk_url || '/Music-Duniya.apk';
             updateStatusBox.innerHTML = `
-              <div style="font-weight:700; color:#10b981; margin-bottom:6px;">✓ New Version Available: ${data.latest_version}</div>
-              <div style="color:#b3b3b3; margin-bottom:10px;">${data.changelog}</div>
-              <a href="${data.apk_url || '#'}" download="Music-Duniya.apk" style="display:inline-block; background:#10b981; color:#000; font-weight:700; padding:8px 18px; border-radius:20px; text-decoration:none; font-size:12px;">Download APK Update</a>
+              <div style="font-weight:700; color:#10b981; margin-bottom:8px; font-size:14px;">✓ New Version Available: ${data.latest_version}</div>
+              <div style="color:#e2e8f0; font-size:12px; line-height:1.5; margin-bottom:12px; background:rgba(255,255,255,0.05); padding:10px 14px; border-radius:8px;">${data.changelog}</div>
+              <a href="${dlUrl}" download="Music-Duniya.apk" style="display:inline-flex; align-items:center; gap:6px; background:linear-gradient(135deg, #f59e0b, #fbbf24); color:#000; font-weight:800; padding:10px 22px; border-radius:24px; text-decoration:none; font-size:13px; box-shadow:0 4px 16px rgba(245,158,11,0.3);">
+                <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#000;"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                <span>Download APK Update (${data.apk_size || '0.15 MB'})</span>
+              </a>
             `;
             showToast(`Update found: ${data.latest_version}`);
           } else {
             updateStatusBox.innerHTML = `
               <div style="display:flex; align-items:center; gap:8px; color:#10b981; font-weight:600; margin-bottom:4px;">
                 <svg viewBox="0 0 24 24" style="width:18px; height:18px; fill:#10b981;"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
-                <span>Latest Official Build Active (v1.2.0)</span>
+                <span>Latest Official Build Active (v2.0.0)</span>
               </div>
               <div style="font-size:12px; color:var(--text-subdued); line-height:1.45;">
-                You are on the latest release of Music-Duniya. Lossless streaming engine, Supabase Jam sync, and verified studio art are fully up to date.
+                You are on the latest release of Music-Duniya. Haute Hi-Fi Studio engine, turntable deck, and foreground media playback are fully active.
               </div>
             `;
-            showToast('Music-Duniya is up to date (v1.2.0)');
+            showToast('Music-Duniya is up to date (v2.0.0)');
           }
         } catch (_) {
-          updateStatusBox.innerHTML = `<span style="color:#10b981;">✓ Latest Version (v1.2.0) • Up to date.</span>`;
+          updateStatusBox.innerHTML = `<span style="color:#10b981;">✓ Latest Version (v2.0.0) • Up to date.</span>`;
         } finally {
           btnCheckUpdate.disabled = false;
           btnCheckUpdate.textContent = 'Search for Updates';
         }
       });
     }
+
+    // Auto-check for OTA updates in the background on startup
+    setTimeout(async () => {
+      try {
+        const res = await fetch('/api/check-update');
+        if (res.ok) {
+          const uData = await res.json();
+          if (uData && uData.update_available) {
+            showToast(`🔔 OTA Update Available: ${uData.latest_version} (Haute Hi-Fi)`);
+          }
+        }
+      } catch (_) {}
+    }, 2500);
 
     // ==========================================
     // JAM (LISTEN TOGETHER) SYNC ENGINE
