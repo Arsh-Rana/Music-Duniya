@@ -16,7 +16,7 @@
     <!-- MANDATORY USER LOGIN & GMAIL AUTH CARD -->
     <div class="auth-modal-overlay" id="auth-modal-overlay">
       <div class="auth-card" id="auth-card">
-        <button class="auth-close-btn" id="btn-close-auth" style="display:none;">✕</button>
+        <button class="auth-close-btn" id="btn-close-auth" title="Close">✕</button>
         <div class="auth-header">
           <div class="auth-emblem">
             <img src="logo.png" class="auth-logo" alt="Music-Duniya">
@@ -29,19 +29,22 @@
           <div class="auth-field">
             <label for="auth-name">Your Full Name</label>
             <div class="input-glow-box">
-              <input type="text" id="auth-name" placeholder="e.g. Arsh Rana" autocomplete="name" required>
+              <input type="text" id="auth-name" value="Arsh Rana" placeholder="e.g. Arsh Rana" autocomplete="name" required>
             </div>
           </div>
           <div class="auth-field">
             <label for="auth-email">Your Gmail Address</label>
             <div class="input-glow-box">
-              <input type="email" id="auth-email" placeholder="e.g. arshrana@gmail.com" autocomplete="email" required>
+              <input type="email" id="auth-email" value="arshrana2468@gmail.com" placeholder="e.g. arshrana@gmail.com" autocomplete="email" required>
             </div>
           </div>
-          <div class="auth-actions">
-            <button class="btn-primary auth-submit-btn" id="btn-auth-submit">
+          <div class="auth-actions" style="display:flex; flex-direction:column; gap:10px;">
+            <button class="btn-primary auth-submit-btn" id="btn-auth-submit" type="button">
               <svg viewBox="0 0 24 24" class="auth-btn-icon"><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z"/></svg>
               <span>Authenticate &amp; Enter Studio</span>
+            </button>
+            <button class="btn-secondary auth-guest-btn" id="btn-auth-guest" type="button" style="width:100%; padding:11px; border-radius:var(--radius-capsule); font-size:13px; font-weight:700; background:rgba(255,255,255,0.06); border:1px solid var(--border-hairline); color:var(--text-platinum); cursor:pointer;">
+              Continue as Studio Guest ➔
             </button>
           </div>
           <div class="auth-footer-badge">
@@ -179,10 +182,11 @@
 
       <!-- Mobile Horizontal Deck Switcher -->
       <div class="m-deck-pills" id="m-filter-pills">
-        <button class="m-deck-chip active" data-pill="all">✦ Console</button>
-        <button class="m-deck-chip" data-pill="music">◈ Crates</button>
-        <button class="m-deck-chip" data-pill="podcasts">◉ Maestros</button>
-        <button class="m-deck-chip" data-pill="audiobooks">☊ Jam Room</button>
+        <button class="m-deck-chip active" data-pill="home">✦ Console</button>
+        <button class="m-deck-chip" data-pill="library">◈ Crates</button>
+        <button class="m-deck-chip" data-pill="artists">◉ Maestros</button>
+        <button class="m-deck-chip" data-pill="jam">☊ Jam Room</button>
+        <button class="m-deck-chip" data-pill="liked">♥ Vault</button>
       </div>
     </header>
 
@@ -198,7 +202,7 @@
           <span class="drawer-spec-tag">STUDIO QUEUE</span>
           <h3 id="drawer-title">Upcoming Tracks</h3>
         </div>
-        <button class="icon-btn" id="btn-close-drawer" title="Close Drawer">
+        <button class="icon-btn" id="btn-close-queue-drawer" title="Close Drawer">
           <svg viewBox="0 0 24 24" class="icon"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
         </button>
       </div>
@@ -334,7 +338,7 @@
         <div class="p-card-header">
           <div class="p-header-title-row">
             <span class="p-studio-tag">STUDIO PROFILE</span>
-            <button class="p-close-btn" id="btn-close-drawer">✕</button>
+            <button class="p-close-btn" id="btn-close-profile-drawer" title="Close Profile">✕</button>
           </div>
 
           <div class="p-avatar-circle" id="p-avatar-box">

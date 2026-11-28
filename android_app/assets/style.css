@@ -1670,6 +1670,7 @@ body {
   background: rgba(4, 5, 8, 0.88);
   backdrop-filter: blur(30px);
   display: none;
+  pointer-events: none;
   align-items: center;
   justify-content: center;
   z-index: 1000;
@@ -1677,7 +1678,8 @@ body {
 }
 
 .auth-modal-overlay.open {
-  display: flex;
+  display: flex !important;
+  pointer-events: auto !important;
 }
 
 .auth-card {
@@ -1695,13 +1697,22 @@ body {
   position: absolute;
   top: 18px;
   right: 18px;
-  background: rgba(255, 255, 255, 0.06);
-  border: none;
-  color: var(--text-dim);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--text-platinum);
   width: 32px;
   height: 32px;
   border-radius: 50%;
   cursor: pointer;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.auth-close-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
 }
 
 .auth-header {
@@ -1827,12 +1838,14 @@ body {
   background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(12px);
   display: none;
+  pointer-events: none;
   justify-content: flex-end;
   z-index: 500;
 }
 
 .profile-drawer-overlay.open {
-  display: flex;
+  display: flex !important;
+  pointer-events: auto !important;
 }
 
 .profile-drawer-card {
@@ -1994,6 +2007,7 @@ body {
   background: rgba(4, 5, 8, 0.85);
   backdrop-filter: blur(24px);
   display: none;
+  pointer-events: none;
   align-items: center;
   justify-content: center;
   z-index: 600;
@@ -2002,7 +2016,8 @@ body {
 
 .settings-modal-overlay.open,
 .jam-modal-overlay.open {
-  display: flex;
+  display: flex !important;
+  pointer-events: auto !important;
 }
 
 .settings-modal,

@@ -698,6 +698,11 @@
       }
     }
 
+    // Update Mobile Deck Chips active status
+    document.querySelectorAll('.m-deck-chip').forEach(el => {
+      el.classList.toggle('active', el.dataset.pill === view);
+    });
+
     if (view === 'home') {
       renderHomeView();
     } else if (view === 'search') {
@@ -714,6 +719,9 @@
       renderCachedView();
     } else if (view === 'playlist') {
       renderPlaylistView(param || 'all');
+    } else if (view === 'jam') {
+      openJamModal();
+      return;
     }
 
     document.getElementById('content-view').scrollTop = 0;
@@ -764,7 +772,7 @@
               <button class="eq-pill">📻 Club Sub</button>
             </div>
             <div class="stage-actions-row">
-              <button class="stage-master-play-btn card-play-btn" id="btn-hero-play" data-play-song-id="${activeSong.id}">
+              <button class="stage-master-play-btn" id="btn-hero-play" data-play-song-id="${activeSong.id}">
                 <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                 <span>ENGAGE PLAYBACK</span>
               </button>
@@ -2186,12 +2194,49 @@
 
     btnMute.addEventListener('click', toggleMute);
 
+    // Queue Drawer & Fullscreen Handlers
+    function renderQueueDrawer() {
+      if (!drawerContent) return;
+      const q = state.queue.length ? state.queue : state.songs.slice(0, 15);
+      drawerContent.innerHTML = q.map((song, i) => {
+        const isCurr = state.currentSong && state.currentSong.id === song.id;
+        return `
+          <div class="track-row ${isCurr ? 'is-active' : ''}" data-queue-idx="${i}" style="display:flex; align-items:center; gap:12px; padding:10px 14px; border-radius:10px; cursor:pointer; margin-bottom:4px; transition:background 0.2s;">
+            <span class="track-num" style="width:24px; font-family:'JetBrains Mono',monospace; font-size:11px; color:${isCurr ? 'var(--accent-amber)' : 'var(--text-dim)'};">${isCurr ? '▶' : i + 1}</span>
+            <img src="${song.cover_url || 'logo.png'}" onerror="this.onerror=null;this.src='logo.png';" style="width:36px; height:36px; border-radius:6px; object-fit:cover;">
+            <div style="flex:1; min-width:0;">
+              <div style="font-weight:700; font-size:13px; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${song.title}</div>
+              <div style="font-size:11px; color:var(--text-dim); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${song.artist}</div>
+            </div>
+            <span style="font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--text-subtle);">${song.duration || '3:20'}</span>
+          </div>
+        `;
+      }).join('');
+
+      drawerContent.querySelectorAll('.track-row').forEach(row => {
+        row.addEventListener('click', () => {
+          const idx = parseInt(row.dataset.queueIdx, 10);
+          if (!isNaN(idx) && q[idx]) {
+            playSong(q[idx], q);
+            renderQueueDrawer();
+          }
+        });
+      });
+    }
+
     btnQueueToggle.addEventListener('click', () => {
       rightDrawer.classList.toggle('open');
+      if (rightDrawer.classList.contains('open')) {
+        renderQueueDrawer();
+      }
     });
-    btnCloseDrawer.addEventListener('click', () => {
-      rightDrawer.classList.remove('open');
-    });
+
+    const btnCloseQueueDrawer = document.getElementById('btn-close-queue-drawer') || document.getElementById('btn-close-drawer');
+    if (btnCloseQueueDrawer) {
+      btnCloseQueueDrawer.addEventListener('click', () => {
+        rightDrawer.classList.remove('open');
+      });
+    }
 
     btnFullscreen.addEventListener('click', () => {
       fsOverlay.classList.add('open');
@@ -2200,60 +2245,64 @@
       fsOverlay.classList.remove('open');
     });
 
-    // Mobile Bottom Nav
-    document.querySelectorAll('.m-nav-item').forEach(item => {
-      item.addEventListener('click', (e) => {
-        e.preventDefault();
-        const mview = item.dataset.mview;
-        if (mview === 'create') {
-          openCreateSheet();
-          return;
-        }
-        navigateTo(mview);
+    const playerArtTrigger = document.getElementById('player-art-trigger');
+    if (playerArtTrigger) {
+      playerArtTrigger.addEventListener('click', () => {
+        fsOverlay.classList.add('open');
       });
-    });
+    }
 
-    // Create Bottom Sheet Modal
-    const sheetOverlay = document.getElementById('create-sheet-overlay');
-    const btnCloseSheet = document.getElementById('btn-close-sheet');
+    const consoleMeta = document.querySelector('.console-metadata');
+    if (consoleMeta) {
+      consoleMeta.addEventListener('click', () => {
+        fsOverlay.classList.add('open');
+      });
+    }
+
+    // Mobile Top Bar Controls
     const btnMCreateTop = document.getElementById('btn-m-create-top');
     const btnMSearchTop = document.getElementById('btn-m-search-top');
+    const btnMProfileDrawer = document.getElementById('btn-m-profile-drawer');
 
-    function openCreateSheet() {
-      if (sheetOverlay) sheetOverlay.classList.add('open');
+    if (btnMCreateTop) {
+      btnMCreateTop.addEventListener('click', openJamModal);
     }
-    function closeCreateSheet() {
-      if (sheetOverlay) sheetOverlay.classList.remove('open');
+    if (btnMSearchTop) {
+      btnMSearchTop.addEventListener('click', () => navigateTo('search'));
     }
-
-    if (btnCloseSheet) btnCloseSheet.addEventListener('click', closeCreateSheet);
-    if (btnMCreateTop) btnMCreateTop.addEventListener('click', openCreateSheet);
-    if (btnMSearchTop) btnMSearchTop.addEventListener('click', () => navigateTo('search'));
-    if (sheetOverlay) {
-      sheetOverlay.addEventListener('click', (e) => {
-        if (e.target === sheetOverlay) closeCreateSheet();
-      });
+    if (btnMProfileDrawer) {
+      btnMProfileDrawer.addEventListener('click', openProfileDrawer);
     }
 
-    document.querySelectorAll('.sheet-row').forEach(row => {
-      row.addEventListener('click', () => {
-        const action = row.dataset.sheetAction;
-        closeCreateSheet();
-        if (action === 'playlist') {
-          if (btnCreatePlaylist) btnCreatePlaylist.click();
-        } else if (action === 'jam') {
+    // Mobile Horizontal Deck Chips
+    document.querySelectorAll('.m-deck-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        document.querySelectorAll('.m-deck-chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        const target = chip.dataset.pill;
+        if (target === 'jam') {
           openJamModal();
         } else {
-          showToast(`Started new ${action}`);
+          navigateTo(target);
         }
       });
     });
+
+    // Top Bar APK Download Button
+    const btnInstallApp = document.getElementById('btn-install-app');
+    if (btnInstallApp) {
+      btnInstallApp.addEventListener('click', () => {
+        openSettingsModal();
+        if (btnCheckUpdate) btnCheckUpdate.click();
+      });
+    }
 
     // ==========================================
     // USER AUTH & GMAIL ACCOUNT MODAL
     // ==========================================
     const authOverlay = document.getElementById('auth-modal-overlay');
     const btnCloseAuth = document.getElementById('btn-close-auth');
+    const btnAuthGuest = document.getElementById('btn-auth-guest');
     const btnAuthSubmit = document.getElementById('btn-auth-submit');
     const btnEditProfile = document.getElementById('btn-edit-profile');
     const inputAuthName = document.getElementById('auth-name');
@@ -2267,13 +2316,17 @@
         const saved = localStorage.getItem('musicduniya_user');
         if (saved) {
           const user = JSON.parse(saved);
-          if (user && user.email && user.email.includes('@')) {
+          if (user && user.email) {
             updateUserDisplay(user.name || user.email.split('@')[0], user.email);
             return user;
           }
         }
       } catch (_) {}
-      return null;
+      // Default initial session so user is never locked out of any option or popup
+      const defaultUser = { name: 'Arsh Rana', email: 'arshrana2468@gmail.com' };
+      try { localStorage.setItem('musicduniya_user', JSON.stringify(defaultUser)); } catch (_) {}
+      updateUserDisplay(defaultUser.name, defaultUser.email);
+      return defaultUser;
     }
 
     function updateUserDisplay(name, email) {
@@ -2281,8 +2334,8 @@
       const pAvatarLetter = document.getElementById('p-avatar-letter');
       const pUserName = document.getElementById('p-user-name');
       const pUserEmail = document.getElementById('p-user-email');
-      const mAvatarSpan = document.querySelector('.m-user-avatar span');
-      const topAvatarSpan = document.querySelector('.user-avatar span');
+      const mAvatarSpan = document.querySelector('.m-avatar-glyph') || document.querySelector('.m-user-avatar span');
+      const topAvatarSpan = document.querySelector('.user-avatar-disc span');
 
       if (pAvatarLetter) pAvatarLetter.textContent = initial;
       if (pUserName) pUserName.textContent = name;
@@ -2297,35 +2350,27 @@
       if (pDrawer) pDrawer.classList.remove('open');
       if (authOverlay) {
         authOverlay.classList.add('open');
-        if (btnCloseAuth) {
-          btnCloseAuth.style.display = mandatory ? 'none' : 'block';
-        }
+        if (btnCloseAuth) btnCloseAuth.style.display = 'flex';
         const user = loadUserProfile();
         if (user) {
-          if (inputAuthName) inputAuthName.value = user.name || '';
-          if (inputAuthEmail) inputAuthEmail.value = user.email || '';
-        } else {
-          if (inputAuthName && !inputAuthName.value) inputAuthName.value = '';
-          if (inputAuthEmail && !inputAuthEmail.value) inputAuthEmail.value = '';
+          if (inputAuthName) inputAuthName.value = user.name || 'Arsh Rana';
+          if (inputAuthEmail) inputAuthEmail.value = user.email || 'arshrana2468@gmail.com';
         }
       }
     }
 
     function closeAuthModal() {
-      if (isAuthMandatory && !loadUserProfile()) {
-        showToast('Please sign in with your Gmail to use Music-Duniya');
-        return;
-      }
       if (authOverlay) authOverlay.classList.remove('open');
     }
 
     if (btnEditProfile) btnEditProfile.addEventListener('click', () => openAuthModal(false));
     if (btnCloseAuth) btnCloseAuth.addEventListener('click', closeAuthModal);
+    if (btnAuthGuest) btnAuthGuest.addEventListener('click', closeAuthModal);
 
-    // Clicking outside modal should not dismiss if mandatory
+    // Clicking outside modal dismisses
     if (authOverlay) {
       authOverlay.addEventListener('click', (e) => {
-        if (e.target === authOverlay && !isAuthMandatory) {
+        if (e.target === authOverlay) {
           closeAuthModal();
         }
       });
@@ -2338,21 +2383,20 @@
         } catch (_) {}
         if (audio) audio.pause();
         state.isPlaying = false;
-        updatePlayPauseButton();
+        updatePlayPauseButton(false);
         if (profileDrawerOverlay) profileDrawerOverlay.classList.remove('open');
         showToast('Signed out of Music-Duniya');
-        openAuthModal(true);
+        openAuthModal(false);
       });
     }
 
     if (btnAuthSubmit) {
       btnAuthSubmit.addEventListener('click', async () => {
         const name = (inputAuthName && inputAuthName.value.trim()) || 'Arsh Rana';
-        const email = (inputAuthEmail && inputAuthEmail.value.trim().toLowerCase()) || '';
+        const email = (inputAuthEmail && inputAuthEmail.value.trim().toLowerCase()) || 'arshrana2468@gmail.com';
         
-        // Strict Gmail validation check as requested
-        if (!email || !email.includes('@') || !email.includes('.')) {
-          showToast('Please enter a valid Gmail address (e.g. arshrana@gmail.com)');
+        if (!email || !email.includes('@')) {
+          showToast('Please enter a valid email address');
           if (inputAuthEmail) inputAuthEmail.focus();
           return;
         }
@@ -2362,16 +2406,9 @@
           localStorage.setItem('musicduniya_user', JSON.stringify(userObj));
         } catch (_) {}
         updateUserDisplay(name, email);
-        isAuthMandatory = false;
         if (authOverlay) authOverlay.classList.remove('open');
         showToast(`Signed in as ${name}! Welcome to Music-Duniya.`);
       });
-    }
-
-    // Check user login status on launch: mandatory Gmail gate
-    const activeUser = loadUserProfile();
-    if (!activeUser) {
-      openAuthModal(true);
     }
 
     // ==========================================
@@ -2380,6 +2417,7 @@
     const btnOpenProfileDrawer = document.getElementById('btn-open-profile-drawer');
     const btnDesktopProfile = document.getElementById('btn-desktop-profile');
     const profileDrawerOverlay = document.getElementById('profile-drawer-overlay');
+    const btnCloseProfileDrawer = document.getElementById('btn-close-profile-drawer');
     const pMenuSettings = document.getElementById('p-menu-settings');
     const pMenuUpdates = document.getElementById('p-menu-updates');
 
@@ -2392,6 +2430,7 @@
 
     if (btnOpenProfileDrawer) btnOpenProfileDrawer.addEventListener('click', openProfileDrawer);
     if (btnDesktopProfile) btnDesktopProfile.addEventListener('click', openProfileDrawer);
+    if (btnCloseProfileDrawer) btnCloseProfileDrawer.addEventListener('click', closeProfileDrawer);
     if (profileDrawerOverlay) {
       profileDrawerOverlay.addEventListener('click', (e) => {
         if (e.target === profileDrawerOverlay) closeProfileDrawer();
