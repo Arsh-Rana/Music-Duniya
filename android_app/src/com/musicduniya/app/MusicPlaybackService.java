@@ -32,10 +32,10 @@ public class MusicPlaybackService extends Service {
             try {
                 NotificationChannel channel = new NotificationChannel(
                     CHANNEL_ID,
-                    "Music-Duniya Playback",
+                    "Music Playback",
                     NotificationManager.IMPORTANCE_LOW
                 );
-                channel.setDescription("Audio playback & controls for Music-Duniya");
+                channel.setDescription("Audio playback & controls for Music");
                 channel.setShowBadge(false);
                 NotificationManager nm = getSystemService(NotificationManager.class);
                 if (nm != null) {
@@ -50,7 +50,7 @@ public class MusicPlaybackService extends Service {
             if (wakeLock == null) {
                 PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
                 if (pm != null) {
-                    wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "MusicDuniya:PlaybackWakeLock");
+                    wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Music:PlaybackWakeLock");
                     wakeLock.acquire(3600 * 1000L); // 1 hour safety timeout
                 }
             }
@@ -81,7 +81,7 @@ public class MusicPlaybackService extends Service {
         boolean isPlaying = intent != null && intent.getBooleanExtra("isPlaying", true);
 
         if (title == null || title.isEmpty()) {
-            title = "Music-Duniya";
+            title = "Music";
         }
         if (artist == null || artist.isEmpty()) {
             artist = "Lossless Audio";

@@ -152,9 +152,14 @@ def build():
 
     # 9. Sign APK with apksigner
     print("[10] Signing APK with apksigner...")
-    final_apk = os.path.join(root_dir, 'Music-Duniya.apk')
-    final_apk_local = os.path.join(script_dir, 'Music-Duniya.apk')
-    for p in [final_apk, final_apk_local]:
+    final_apk = os.path.join(root_dir, 'Music.apk')
+    final_apk_duniya = os.path.join(root_dir, 'Music-Duniya.apk')
+    final_apk_local = os.path.join(script_dir, 'Music.apk')
+    final_apk_local_duniya = os.path.join(script_dir, 'Music-Duniya.apk')
+    music_web_apk = os.path.join(music_web_dir, 'Music.apk')
+    music_web_apk_duniya = os.path.join(music_web_dir, 'Music-Duniya.apk')
+
+    for p in [final_apk, final_apk_duniya, final_apk_local, final_apk_local_duniya]:
         if os.path.exists(p):
             os.remove(p)
 
@@ -167,8 +172,9 @@ def build():
     ]
     run_cmd(sign_cmd, cwd=script_dir)
 
-    # Copy to script_dir
-    shutil.copy2(final_apk, final_apk_local)
+    # Copy to all target locations for seamless access
+    for dst in [final_apk_duniya, final_apk_local, final_apk_local_duniya, music_web_apk, music_web_apk_duniya]:
+        shutil.copy2(final_apk, dst)
 
     # 10. Verify signature
     print("[11] Verifying APK signature...")

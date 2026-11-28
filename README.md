@@ -1,4 +1,4 @@
-# Music-Duniya 🎵
+# Music 🎵
 
 > **Ultra Lossless Music Streaming Web Application & Android App**  
 > Built with a luxury visionOS dark UI inspired by **YouTube Music Premium**, **Apple Music**, and **ViaMusic**, featuring Long-Distance Jam co-listening, verified studio artwork, and native Android foreground media playback.
@@ -68,7 +68,7 @@ Music-Duniya/
 git clone https://github.com/Arsh-Rana/Music-Duniya.git
 cd Music-Duniya
 
-# Start the Music-Duniya server (Python 3.8+)
+# Start the Music server (Python 3.8+)
 python music_app/server.py
 ```
 
@@ -79,7 +79,7 @@ Open your browser and visit:
 
 ### 2. Install on Android
 
-1. Download the signed APK file: [`Music-Duniya.apk`](Music-Duniya.apk)
+1. Download the signed APK file: [`Music.apk`](Music.apk) or [`Music-Duniya.apk`](Music-Duniya.apk)
 2. Transfer it to your Android device via USB, WhatsApp, or Google Drive.
 3. Open the file on your device and tap **Install**.
 4. Grant notification permission when prompted to enable background media playback and status-bar controls.

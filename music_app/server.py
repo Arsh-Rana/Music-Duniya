@@ -172,18 +172,20 @@ class MusicDuniyaHandler(BaseHTTPRequestHandler):
 
         # 8. API: Check for Updates in Settings & Background OTA Broadcast
         if pathname == "/api/check-update":
-            apk_path = os.path.join(ROOT_DIR, "Music-Duniya.apk")
+            apk_path = os.path.join(ROOT_DIR, "Music.apk")
+            if not os.path.exists(apk_path):
+                apk_path = os.path.join(ROOT_DIR, "Music-Duniya.apk")
             apk_size_mb = f"{os.path.getsize(apk_path) / (1024 * 1024):.2f} MB" if os.path.exists(apk_path) else "0.15 MB"
             update_info = {
-                "app_name": "Music-Duniya",
+                "app_name": "Music",
                 "current_version": "v2.0.0",
                 "latest_version": "v2.0.0",
                 "update_available": True,
                 "is_latest": False,
-                "release_date": "2026-11-27",
-                "apk_filename": "Music-Duniya.apk",
-                "apk_download_url": "/Music-Duniya.apk",
-                "apk_url": "/Music-Duniya.apk",
+                "release_date": "2026-11-28",
+                "apk_filename": "Music.apk",
+                "apk_download_url": "/Music.apk",
+                "apk_url": "/Music.apk",
                 "apk_size": apk_size_mb,
                 "title": "Haute Hi-Fi Studio & Background Playback Release",
                 "changelog": "• Haute Hi-Fi Studio Master Soundstage with 3D Turntable Deck & Tonearm<br>• Native Android Foreground Media Notification with lockscreen controls<br>• Full Android OS Force Stop capability enabled during background playback<br>• Heavyweight Master Crates & Royal Punjabi Maestros catalog<br>• Mandatory Gmail authentication gate & long-distance Jam sync"
@@ -191,13 +193,20 @@ class MusicDuniyaHandler(BaseHTTPRequestHandler):
             self.send_json_response(update_info)
             return
 
-        # 9. Serve APK File Directly
-        if pathname == "/Music-Duniya.apk":
-            apk_file = os.path.join(ROOT_DIR, "Music-Duniya.apk")
+        # 9. Serve APK File Directly (support both /Music.apk and /Music-Duniya.apk)
+        if pathname in ("/Music.apk", "/Music-Duniya.apk", "/download/apk"):
+            apk_file = os.path.join(ROOT_DIR, "Music.apk")
+            if not os.path.exists(apk_file):
+                apk_file = os.path.join(ROOT_DIR, "Music-Duniya.apk")
+            if not os.path.exists(apk_file):
+                apk_file = os.path.join(MUSIC_APP_DIR, "Music.apk")
+            if not os.path.exists(apk_file):
+                apk_file = os.path.join(MUSIC_APP_DIR, "Music-Duniya.apk")
+
             if os.path.exists(apk_file):
                 self.send_response(200)
                 self.send_header("Content-Type", "application/vnd.android.package-archive")
-                self.send_header("Content-Disposition", 'attachment; filename="Music-Duniya.apk"')
+                self.send_header("Content-Disposition", 'attachment; filename="Music.apk"')
                 self.send_header("Content-Length", str(os.path.getsize(apk_file)))
                 self.end_headers()
                 with open(apk_file, "rb") as f:
@@ -421,7 +430,7 @@ class MusicDuniyaHandler(BaseHTTPRequestHandler):
 def run():
     server_address = ('', PORT)
     httpd = HTTPServer(server_address, MusicDuniyaHandler)
-    print(f"[*] Music-Duniya Server running on http://localhost:{PORT}")
+    print(f"[*] Music Server running on http://localhost:{PORT}")
     try:
         httpd.serve_forever()
     except KeyboardInterrupt:

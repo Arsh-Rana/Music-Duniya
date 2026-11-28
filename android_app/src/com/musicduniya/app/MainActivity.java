@@ -38,7 +38,7 @@ public class MainActivity extends Activity {
         // Start Foreground Service so process is active and Force Stop is available
         try {
             android.content.Intent serviceIntent = new android.content.Intent(this, MusicPlaybackService.class);
-            serviceIntent.putExtra("title", "Music-Duniya");
+            serviceIntent.putExtra("title", "Music");
             serviceIntent.putExtra("artist", "Ready to Play");
             serviceIntent.putExtra("isPlaying", false);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -73,7 +73,7 @@ public class MainActivity extends Activity {
                     "Music Playback",
                     NotificationManager.IMPORTANCE_LOW
                 );
-                channel.setDescription("Music-Duniya audio controls and playback status");
+                channel.setDescription("Music audio controls and playback status");
                 channel.setShowBadge(false);
                 NotificationManager nm = getSystemService(NotificationManager.class);
                 if (nm != null) {

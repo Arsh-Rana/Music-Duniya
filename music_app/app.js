@@ -1,5 +1,5 @@
 /**
- * Music-Duniya Web Player - Complete Ultra-Premium Frontend, Audio Engine & Lossless Music Streamer
+ * Music Web Player - Complete Ultra-Premium Frontend, Audio Engine & Lossless Music Streamer
  * Supports Lavish Royal Playlists, Artist Avatars, DJPunjab A-Z Scraping, and Supabase Temporary Caching
  */
 
@@ -602,7 +602,7 @@
       navigator.mediaSession.metadata = new MediaMetadata({
         title: song.title,
         artist: song.artist + (song.source ? ` (${song.source.toUpperCase()})` : ''),
-        album: song.album || 'Music-Duniya Master',
+        album: song.album || 'Music Master',
         artwork: [
           { src: song.cover_url || 'logo.png', sizes: '512x512', type: 'image/jpeg' }
         ]
@@ -693,7 +693,7 @@
         mTitle.textContent = 'Singers & Artists';
         if (mPills) mPills.style.display = 'none';
       } else {
-        mTitle.textContent = 'Music-Duniya';
+        mTitle.textContent = 'Music';
         if (mPills) mPills.style.display = 'flex';
       }
     }
@@ -789,7 +789,7 @@
               </div>
               <div class="vinyl-record-disc ${state.isPlaying ? 'is-playing' : ''}" id="hero-vinyl-disc">
                 <div class="vinyl-center-label">
-                  <span class="label-brand">MUSIC-DUNIYA</span>
+                  <span class="label-brand">MUSIC</span>
                   <span class="label-speed">33⅓ RPM</span>
                   <div class="spindle-hole"></div>
                 </div>
@@ -1082,7 +1082,7 @@
               Verified Artist
             </span>
             <h1 class="hero-title">${prof.name}</h1>
-            <p class="hero-desc">Music-Duniya Official Artist Discography • Studio Master Quality</p>
+            <p class="hero-desc">Music Official Artist Discography • Studio Master Quality</p>
             <div class="hero-meta">
               <span>${trackList.length} tracks available</span>
             </div>
@@ -1700,7 +1700,7 @@
           <h1 class="hero-title">Liked Songs</h1>
           <p class="hero-desc">Your personal favorite songs in one collection.</p>
           <div class="hero-meta">
-            <span>Music-Duniya</span> • <span>${likedSongs.length} songs</span> • <span style="color:#a855f7;">Lossless 320kbps</span>
+            <span>Music</span> • <span>${likedSongs.length} songs</span> • <span style="color:#a855f7;">Lossless 320kbps</span>
           </div>
         </div>
       </div>
@@ -1737,7 +1737,7 @@
     } else if (state.curatedPlaylists && state.curatedPlaylists[playlistId]) {
       const p = state.curatedPlaylists[playlistId];
       title = p.name;
-      desc = `Exclusive Music-Duniya Master Collection • ${p.tracks.length} Lossless Tracks`;
+      desc = `Exclusive Music Master Collection • ${p.tracks.length} Lossless Tracks`;
       cover = p.cover_url || (p.tracks[0] && p.tracks[0].cover_url) || 'logo.png';
       songs = p.tracks;
     } else if (state.curatedPlaylists) {
@@ -1746,7 +1746,7 @@
       );
       if (found) {
         title = found.name;
-        desc = `Exclusive Music-Duniya Master Collection • ${found.tracks.length} Lossless Tracks`;
+        desc = `Exclusive Music Master Collection • ${found.tracks.length} Lossless Tracks`;
         cover = found.cover_url || (found.tracks[0] && found.tracks[0].cover_url) || 'logo.png';
         songs = found.tracks;
       }
@@ -1760,7 +1760,7 @@
           <h1 class="hero-title">${title}</h1>
           <p class="hero-desc">${desc}</p>
           <div class="hero-meta">
-            <span>Music-Duniya</span> • <span>${songs.length} songs</span> • <span style="color:#a855f7;">Lossless 320kbps</span>
+            <span>Music</span> • <span>${songs.length} songs</span> • <span style="color:#a855f7;">Lossless 320kbps</span>
           </div>
         </div>
       </div>
@@ -1803,7 +1803,7 @@
             const isPlayingThis = state.currentSong && state.currentSong.id === s.id && state.isPlaying;
             const isLiked = state.likedSongIds.has(s.id);
             const cleanTitle = (s.title || 'Untitled').replace(/^\d+\.\s*/, '').replace(/(DJJOHAL|MR-JATT|DJPUNJAB|\.com|\.im)/gi, '').trim();
-            const cleanArtist = (s.artist || 'Music-Duniya').replace(/(DJJOHAL|MR-JATT|DJPUNJAB|\.com|\.im)/gi, '').trim();
+            const cleanArtist = (s.artist || 'Music').replace(/(DJJOHAL|MR-JATT|DJPUNJAB|\.com|\.im)/gi, '').trim();
 
             return `
               <tr class="song-row ${isPlayingThis ? 'playing' : ''}" data-song-id="${s.id}">
@@ -2385,7 +2385,7 @@
         state.isPlaying = false;
         updatePlayPauseButton(false);
         if (profileDrawerOverlay) profileDrawerOverlay.classList.remove('open');
-        showToast('Signed out of Music-Duniya');
+        showToast('Signed out of Music');
         openAuthModal(false);
       });
     }
@@ -2407,7 +2407,7 @@
         } catch (_) {}
         updateUserDisplay(name, email);
         if (authOverlay) authOverlay.classList.remove('open');
-        showToast(`Signed in as ${name}! Welcome to Music-Duniya.`);
+        showToast(`Signed in as ${name}! Welcome to Music.`);
       });
     }
 
@@ -2490,11 +2490,11 @@
           } catch (_) {}
 
           if (data && data.update_available) {
-            const dlUrl = data.apk_download_url || data.apk_url || '/Music-Duniya.apk';
+            const dlUrl = data.apk_download_url || data.apk_url || '/Music.apk';
             updateStatusBox.innerHTML = `
               <div style="font-weight:700; color:#10b981; margin-bottom:8px; font-size:14px;">✓ New Version Available: ${data.latest_version}</div>
               <div style="color:#e2e8f0; font-size:12px; line-height:1.5; margin-bottom:12px; background:rgba(255,255,255,0.05); padding:10px 14px; border-radius:8px;">${data.changelog}</div>
-              <a href="${dlUrl}" download="Music-Duniya.apk" style="display:inline-flex; align-items:center; gap:6px; background:linear-gradient(135deg, #f59e0b, #fbbf24); color:#000; font-weight:800; padding:10px 22px; border-radius:24px; text-decoration:none; font-size:13px; box-shadow:0 4px 16px rgba(245,158,11,0.3);">
+              <a href="${dlUrl}" download="Music.apk" style="display:inline-flex; align-items:center; gap:6px; background:linear-gradient(135deg, #f59e0b, #fbbf24); color:#000; font-weight:800; padding:10px 22px; border-radius:24px; text-decoration:none; font-size:13px; box-shadow:0 4px 16px rgba(245,158,11,0.3);">
                 <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#000;"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
                 <span>Download APK Update (${data.apk_size || '0.15 MB'})</span>
               </a>
@@ -2507,10 +2507,10 @@
                 <span>Latest Official Build Active (v2.0.0)</span>
               </div>
               <div style="font-size:12px; color:var(--text-subdued); line-height:1.45;">
-                You are on the latest release of Music-Duniya. Haute Hi-Fi Studio engine, turntable deck, and foreground media playback are fully active.
+                You are on the latest release of Music. Haute Hi-Fi Studio engine, turntable deck, and foreground media playback are fully active.
               </div>
             `;
-            showToast('Music-Duniya is up to date (v2.0.0)');
+            showToast('Music is up to date (v2.0.0)');
           }
         } catch (_) {
           updateStatusBox.innerHTML = `<span style="color:#10b981;">✓ Latest Version (v2.0.0) • Up to date.</span>`;
@@ -2767,7 +2767,7 @@
     if (btnMConnect) {
       btnMConnect.addEventListener('click', (e) => {
         e.stopPropagation();
-        showToast('Music-Duniya Connect: Lossless Audio Device Active');
+        showToast('Music Connect: Lossless Audio Device Active');
       });
     }
 
